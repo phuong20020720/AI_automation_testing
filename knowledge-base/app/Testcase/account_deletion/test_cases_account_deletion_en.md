@@ -1,0 +1,167 @@
+# Test Cases — Account Deletion (24-Hour Grace Period) — UI-Grounded
+
+> **Feature:** Worker requests account deletion, with a 24-hour grace period to cancel.
+> **Scope:** Mobile App + Backend Services + Notification Handling.
+> **Source:** Requirement + UI flow `screenshots/Delete_Account.png`.
+> **Generated:** 2026-05-21 — Mode: QUICK.
+> **Techniques applied:** State Transition, Boundary Value Analysis (24h mark), Equivalence Partitioning (reasons for leaving), Decision Table (multi-select reason + Other text).
+
+## Real UI flow (from screenshot)
+
+```
+Settings ──tap "Delete account"──► Reason selection screen
+   │  "Are you sure you want to delete your account?"
+   │  "Select all that apply:" + 8 reason checkboxes + "Please enter details" field (when Other ticked)
+   │  [Delete account]
+   ▼
+Modal "Permanently delete your account?"  ──[Cancel]──► back
+   │  [Delete account]
+   ▼
+"Deletion Scheduled" screen  +  countdown timer "23h 59m"  +  [Cancel Account Deletion]
+   │  tap "Cancel Account Deletion"
+   ▼
+Dialog "Keep your account?"  ──[Continue Deletion]──► keep deletion scheduled
+   │  [Keep My Account]
+   ▼
+"My Wallet" + banner "Deletion request cancelled" (account Active again)
+```
+
+## Overview
+
+| Module | TC ID | Count |
+|---|---|---|
+| M1 — Entry & Reason Selection | TC001–TC012 | 12 |
+| M2 — Confirmation Modal & Submit | TC013–TC019 | 7 |
+| M3 — Deletion Scheduled Screen | TC020–TC024 | 5 |
+| M4 — Cancel Account Deletion | TC025–TC034 | 10 |
+| M5 — Automatic Deletion (Backend) | TC035–TC039 | 5 |
+| M6 — Reason Data & Analytics | TC040–TC042 | 3 |
+| M7 — Notification Handling | TC043–TC045 | 3 |
+| M8 — State Transition & Edge Cases | TC046–TC049 | 4 |
+| **Total** | | **49** |
+
+**Priority distribution:** Critical: 11 · High: 21 · Medium: 12 · Low: 5
+
+**Shared test data:**
+- Active worker: `worker.active@ppac.co.uk` (Worker ID `WK-2026-0001`)
+- Worker in Pending Deletion: `worker.pending@ppac.co.uk` (`WK-2026-0002`)
+- Reference time: submit at `2026-05-21 10:00:00` → scheduled deletion `2026-05-22 10:00:00`
+
+---
+
+## M1 — Entry & Reason Selection
+
+| TC ID | Module | Test Scenario | Pre-Condition | Test Steps | Test Data | Expected Result | Priority |
+|---|---|---|---|---|---|---|---|
+| PPAC_ACCDEL_TC_001 | M1 Reason | Open the Delete account screen from Settings | Worker logged in, account Active | 1. Go to Settings<br>2. Tap the "Delete account" link at the bottom of the screen | worker.active@ppac.co.uk | 1–2. The "Are you sure you want to delete your account?" screen is shown with the reason list and the line "Select all that apply:" | High |
+| PPAC_ACCDEL_TC_002 | M1 Reason | All 8 reasons are displayed with the correct text | On the Delete account screen | 1. Observe the reason list | — | 1. Exactly 8 checkboxes shown: trouble creating submissions / approval too long / no longer work on site / created by mistake / have another account / technical issues / privacy concern / Other | Medium |
+| PPAC_ACCDEL_TC_003 | M1 Reason | Select a single reason | On the Delete account screen | 1. Tick the "I no longer work on the site" checkbox | — | 1. The checkbox is ticked; the "Delete account" button is enabled | Medium |
+| PPAC_ACCDEL_TC_004 | M1 Reason | Select multiple reasons at once (multi-select) | On the Delete account screen | 1. Tick "Submission approval takes too long"<br>2. Tick "I am experiencing technical issues with the app" | 2 reasons | 1–2. Both checkboxes are ticked at the same time (multi-select works — "Select all that apply") | Medium |
+| PPAC_ACCDEL_TC_005 | M1 Reason | Select all 8 reasons | On the Delete account screen | 1. Tick all 8 checkboxes one by one | 8 reasons | 1. All 8 checkboxes are ticked, no error | Low |
+| PPAC_ACCDEL_TC_006 | M1 Reason | Untick a reason | At least 1 reason ticked | 1. Tick "I created this account by mistake"<br>2. Tap the same checkbox again to untick it | — | 1. The checkbox is ticked<br>2. The checkbox is correctly unticked | Low |
+| PPAC_ACCDEL_TC_007 | M1 Reason | No reason selected → cannot submit (Negative) | On the Delete account screen | 1. Do not tick any reason<br>2. Tap "Delete account" | Nothing selected | 1–2. The "Delete account" button is disabled OR an error requiring at least one reason is shown; the confirmation modal does not open | High |
+| PPAC_ACCDEL_TC_008 | M1 Reason | Tick "Other" → the details field appears | On the Delete account screen | 1. Tick the "Other" checkbox | — | 1. A "Please enter details" text field (placeholder "Please enter here") appears right below "Other" | Medium |
+| PPAC_ACCDEL_TC_009 | M1 Reason | Tick "Other" + enter details text | "Other" already ticked | 1. Tick "Other"<br>2. Enter text into the details field | "App crashes when uploading documents" | 1–2. The entered text is shown in the details field | Medium |
+| PPAC_ACCDEL_TC_010 | M1 Reason | Tick "Other" with an empty details field → error (per UI) | "Other" already ticked | 1. Tick "Other"<br>2. Leave the details field empty<br>3. Tap "Delete account" | Other, empty details | 3. Error "Please enter the details here" is shown, the modal does not open. ⚠️ CONFLICT: the requirement says "optional text input" but the UI enforces it as required — needs BA confirmation | High |
+| PPAC_ACCDEL_TC_011 | M1 Reason | Untick "Other" → the details field is hidden | "Other" ticked and text entered | 1. Tick "Other", enter text<br>2. Untick "Other" | — | 2. The details field is hidden; the previously entered content is handled consistently (cleared/kept — needs BA confirmation) | Low |
+| PPAC_ACCDEL_TC_012 | M1 Reason | "Other details" field — maximum length (BVA) | "Other" already ticked | 1. Enter 500 characters<br>2. Enter up to the 501st character | 500 / 501 character string | 1. Accepts 500 characters<br>2. Blocks the 501st character. *Requirement does not define the max — assumed 500* | Low |
+
+---
+
+## M2 — Confirmation Modal & Submit
+
+| TC ID | Module | Test Scenario | Pre-Condition | Test Steps | Test Data | Expected Result | Priority |
+|---|---|---|---|---|---|---|---|
+| PPAC_ACCDEL_TC_013 | M2 Confirm | Tap "Delete account" → the confirmation modal opens | At least 1 valid reason selected | 1. Tap the "Delete account" button | Reason: "I no longer work on the site" | 1. The "Permanently delete your account?" modal is shown with a warning + "Delete account" and "Cancel" buttons | Critical |
+| PPAC_ACCDEL_TC_014 | M2 Confirm | The modal shows a clear warning message | The confirmation modal is open | 1. Read the modal content | — | 1. The modal clearly states: the account will be permanently deleted within 24h and can be cancelled/recovered during that time | High |
+| PPAC_ACCDEL_TC_015 | M2 Confirm | Tap "Cancel" on the modal → no submission | The confirmation modal is open | 1. Tap the "Cancel" button on the modal | — | 1. The modal closes, returns to the reason selection screen; account stays Active; NO deletion request is created | High |
+| PPAC_ACCDEL_TC_016 | M2 Confirm | Tap "Delete account" on the modal → submit succeeds (Happy Path) | The confirmation modal is open | 1. Tap the "Delete account" button on the modal | worker.active@ppac.co.uk | 1. The request is submitted; navigates to the "Deletion Scheduled" screen; account status → "Pending Deletion" | Critical |
+| PPAC_ACCDEL_TC_017 | M2 Confirm | The request is added to the Message Queue (24h delay) | Deletion request just submitted | 1. Submit the request<br>2. Check the Message Queue via a backend tool | WK-2026-0001 | 2. The queue has 1 deletion job, delivery delay = 24h, payload contains worker_id + reason + timestamp | Critical |
+| PPAC_ACCDEL_TC_018 | M2 Confirm | Account status changes to "Pending Deletion" | Deletion request just submitted | 1. Submit the request<br>2. Check the status in the DB | WK-2026-0001 | 2. status = "Pending Deletion" | Critical |
+| PPAC_ACCDEL_TC_019 | M2 Confirm | Submit while the network is disconnected (Edge) | The confirmation modal is open | 1. Enable Airplane Mode<br>2. Tap "Delete account" on the modal | Airplane Mode ON | 2. A network error is shown; the request is NOT submitted; status stays Active; a Retry option is available | High |
+
+---
+
+## M3 — Deletion Scheduled Screen
+
+| TC ID | Module | Test Scenario | Pre-Condition | Test Steps | Test Data | Expected Result | Priority |
+|---|---|---|---|---|---|---|---|
+| PPAC_ACCDEL_TC_020 | M3 Scheduled | The "Deletion Scheduled" screen is shown after submitting | Deletion request just submitted | 1. Observe the screen after tapping "Delete account" on the modal | — | 1. The "Deletion Scheduled" screen is shown with a countdown timer and a "Cancel Account Deletion" button | High |
+| PPAC_ACCDEL_TC_021 | M3 Scheduled | The countdown timer initializes correctly to ~24h | Just submitted at 2026-05-21 10:00:00 | 1. Observe the countdown timer right after submitting | — | 1. The timer shows approximately "23h 59m" and starts counting down to 0 | High |
+| PPAC_ACCDEL_TC_022 | M3 Scheduled | The countdown timer counts down in real time | On the "Deletion Scheduled" screen | 1. Note the timer value<br>2. Wait 5 minutes, then observe again | — | 2. The timer has decreased by ~5 minutes (e.g. from "23h 59m" → "23h 54m") | Medium |
+| PPAC_ACCDEL_TC_023 | M3 Scheduled | The 24h delay is calculated accurately | Submit at 2026-05-21 10:00:00 | 1. Submit the request<br>2. Check the scheduled_deletion_at field | Submit: 2026-05-21 10:00:00 | 2. scheduled_deletion_at = 2026-05-22 10:00:00 (exactly +24h) | High |
+| PPAC_ACCDEL_TC_024 | M3 Scheduled | Close the app and reopen during the Pending Deletion period | account Pending Deletion | 1. Submit deletion<br>2. Fully close the app<br>3. Reopen the app and log in | worker.pending@ppac.co.uk | 3. The app shows the "Deletion Scheduled" screen again, with the timer continuing correctly + the "Cancel Account Deletion" button | High |
+
+---
+
+## M4 — Cancel Account Deletion
+
+| TC ID | Module | Test Scenario | Pre-Condition | Test Steps | Test Data | Expected Result | Priority |
+|---|---|---|---|---|---|---|---|
+| PPAC_ACCDEL_TC_025 | M4 Cancel | Tap "Cancel Account Deletion" → the "Keep your account?" dialog opens | On the "Deletion Scheduled" screen | 1. Tap the "Cancel Account Deletion" button | worker.pending@ppac.co.uk | 1. The "Keep your account?" dialog is shown with "Keep My Account" and "Continue Deletion" buttons | Critical |
+| PPAC_ACCDEL_TC_026 | M4 Cancel | Tap "Keep My Account" → cancellation succeeds (Happy Path) | The "Keep your account?" dialog is open | 1. Tap the "Keep My Account" button | worker.pending@ppac.co.uk | 1. The deletion is cancelled; navigates to the "My Wallet" screen with the "Deletion request cancelled" banner; account Active | Critical |
+| PPAC_ACCDEL_TC_027 | M4 Cancel | Tap "Continue Deletion" → keep the deletion scheduled | The "Keep your account?" dialog is open | 1. Tap the "Continue Deletion" button | — | 1. The dialog closes, stays on the "Deletion Scheduled" screen, the timer keeps running, the deletion is still scheduled | High |
+| PPAC_ACCDEL_TC_028 | M4 Cancel | The request is removed from the Message Queue when cancelled | account Pending Deletion, a job exists in the queue | 1. Cancel Account Deletion → Keep My Account<br>2. Check the Message Queue | WK-2026-0002 | 2. The corresponding deletion job is removed / the cancel event is processed; the queue no longer holds a job to delete this account | Critical |
+| PPAC_ACCDEL_TC_029 | M4 Cancel | Account status returns to Active after cancellation | account Pending Deletion | 1. Cancel Account Deletion → Keep My Account<br>2. Check the status in the DB and UI | WK-2026-0002 | 2. status = "Active" in both DB and UI | Critical |
+| PPAC_ACCDEL_TC_030 | M4 Cancel | The "Deletion request cancelled" banner is shown on My Wallet | Just tapped "Keep My Account" | 1. Observe the "My Wallet" screen after cancelling | — | 1. A confirmation banner "Deletion request cancelled / account active again" is shown at the top of the screen | Medium |
+| PPAC_ACCDEL_TC_031 | M4 Cancel | Cancel close to the 24h mark — inner boundary (BVA: timer ~00h01m) | submitted 23 hours 59 minutes ago | 1. Tap "Cancel Account Deletion" → "Keep My Account" | Cancel when ~1 minute is left on the timer | 1. Cancellation still succeeds, the account returns to Active | High |
+| PPAC_ACCDEL_TC_032 | M4 Cancel | Cannot cancel after 24h — outer boundary (BVA) | submitted > 24h ago, account already deleted | 1. Try to open the app / log in with the deleted account | submit 2026-05-20 10:00, action 2026-05-21 10:30 | 1. No "Deletion Scheduled" screen / Cancel button; the account is permanently deleted, login fails | High |
+| PPAC_ACCDEL_TC_033 | M4 Cancel | Cancel while the network is disconnected (Edge) | The "Keep your account?" dialog is open | 1. Enable Airplane Mode<br>2. Tap "Keep My Account" | Airplane Mode ON | 2. A network error is shown; cancellation is NOT performed; account stays Pending Deletion; Retry available | High |
+| PPAC_ACCDEL_TC_034 | M4 Cancel | Submit deletion again after cancelling → a new 24h window | account just cancelled, status Active | 1. Go to Settings → "Delete account"<br>2. Select a reason → modal → "Delete account"<br>3. Check the timer + scheduled_deletion_at | 2nd submit: 2026-05-21 15:00:00 | 3. A new request is created; a fresh "23h 59m" timer; scheduled_deletion_at = 2026-05-22 15:00:00 | Medium |
+
+---
+
+## M5 — Automatic Deletion (Backend)
+
+| TC ID | Module | Test Scenario | Pre-Condition | Test Steps | Test Data | Expected Result | Priority |
+|---|---|---|---|---|---|---|---|
+| PPAC_ACCDEL_TC_035 | M5 Auto-Delete | The account is automatically deleted after 24h if not cancelled (Happy Path) | submitted a full 24h ago, not cancelled, timer at 0 | 1. Wait until the 24h mark<br>2. Check the account in the system | submit 2026-05-21 10:00 → 2026-05-22 10:00 | 2. The backend processes the queue event; the account is permanently deleted from the system | Critical |
+| PPAC_ACCDEL_TC_036 | M5 Auto-Delete | Authentication access is revoked after deletion | account just auto-deleted | 1. Call an API with the old access token/session<br>2. Try to log in again | Old token of WK-2026-0001 | 1. The API returns 401 — the token is revoked<br>2. Login fails | Critical |
+| PPAC_ACCDEL_TC_037 | M5 Auto-Delete | The account is NOT deleted before the 24h mark (BVA: inner boundary) | submitted 23h ago | 1. At the 23h mark, check the account | submit 2026-05-21 10:00, check 2026-05-22 09:00 | 1. The account still exists, status = "Pending Deletion", not yet deleted | High |
+| PPAC_ACCDEL_TC_038 | M5 Auto-Delete | Log in with an already-deleted account | account permanently deleted | 1. Enter the email + password of the deleted account<br>2. Tap "Log in" | worker.active@ppac.co.uk (deleted) | 2. Login fails, "Account not found" / an equivalent message is shown | Critical |
+| PPAC_ACCDEL_TC_039 | M5 Auto-Delete | The backend handles a queue event error → retry / dead-letter | Simulate a service error while processing the deletion job | 1. Push the job to processing time, simulate a service error<br>2. Observe the queue behaviour | Job to delete WK-2026-0002 | 2. The job is retried per policy or moved to the dead-letter queue; the job is NOT lost; the account is not stuck in a hanging state | High |
+
+---
+
+## M6 — Reason Data & Analytics
+
+| TC ID | Module | Test Scenario | Pre-Condition | Test Steps | Test Data | Expected Result | Priority |
+|---|---|---|---|---|---|---|---|
+| PPAC_ACCDEL_TC_040 | M6 Data | The reasons (multi-select) are stored for analytics | Worker submits deletion with multiple reasons | 1. Tick 2 reasons<br>2. Submit deletion<br>3. Check the analytics/deletion_reasons table | "Submission approval takes too long" + "I am concerned about privacy or data usage" | 3. The record stores all selected reasons + worker_id + timestamp | Medium |
+| PPAC_ACCDEL_TC_041 | M6 Data | The "Other" reason + text content is stored | Worker submits with the "Other" reason and text entered | 1. Tick "Other", enter text<br>2. Submit deletion<br>3. Check the data store | Text: "App crashes when uploading documents" | 3. The record stores reason = "Other" and reason_text = the entered content | Medium |
+| PPAC_ACCDEL_TC_042 | M6 Data | The cancellation event is tracked for analytics | account Pending Deletion | 1. Cancel Account Deletion → Keep My Account<br>2. Check the analytics/cancellation_events table | WK-2026-0002 | 2. A cancellation event record exists: worker_id, timestamp, the request's original reason | Medium |
+
+---
+
+## M7 — Notification Handling
+
+| TC ID | Module | Test Scenario | Pre-Condition | Test Steps | Test Data | Expected Result | Priority |
+|---|---|---|---|---|---|---|---|
+| PPAC_ACCDEL_TC_043 | M7 Notification | The worker receives a notification when submitting a deletion request | Deletion request just submitted | 1. Submit the request<br>2. Check the push notification + email | worker.active@ppac.co.uk | 2. The worker receives a confirmation: the deletion request is scheduled and can be cancelled within 24h | Medium |
+| PPAC_ACCDEL_TC_044 | M7 Notification | The worker receives a notification when cancellation succeeds | Deletion request just cancelled | 1. Cancel Account Deletion → Keep My Account<br>2. Check the notification + email | worker.pending@ppac.co.uk | 2. The worker receives a "Your account deletion request has been cancelled, your account remains active" notification | Low |
+| PPAC_ACCDEL_TC_045 | M7 Notification | Notification/email when the account is permanently deleted | account just auto-deleted | 1. Check the email sent to the registered address | worker.active@ppac.co.uk | 1. A "Your account has been permanently deleted" confirmation email is sent | Low |
+
+---
+
+## M8 — State Transition & Edge Cases
+
+| TC ID | Module | Test Scenario | Pre-Condition | Test Steps | Test Data | Expected Result | Priority |
+|---|---|---|---|---|---|---|---|
+| PPAC_ACCDEL_TC_046 | M8 State | Valid state transition: Active → Pending Deletion → Active (cancel flow) | account Active | 1. Submit deletion (select reason → modal → Delete account)<br>2. Cancel Account Deletion → Keep My Account | WK-2026-0001 | 1. status = Pending Deletion<br>2. status = Active; the account works normally | High |
+| PPAC_ACCDEL_TC_047 | M8 State | Valid state transition: Active → Pending Deletion → Deleted (automatic flow) | account Active | 1. Submit deletion<br>2. Do not cancel, wait past 24h | WK-2026-0001 | 1. status = Pending Deletion<br>2. status = Deleted, the account is permanently deleted | High |
+| PPAC_ACCDEL_TC_048 | M8 Edge | Cannot create a second deletion request while Pending Deletion | account currently Pending Deletion | 1. Go to Settings | worker.pending@ppac.co.uk | 1. The "Delete account" link is unavailable or leads straight to the "Deletion Scheduled" screen; only 1 deletion job exists in the queue | High |
+| PPAC_ACCDEL_TC_049 | M8 Edge | Log in again while Pending Deletion | account Pending Deletion, logged out | 1. Log in again with the account currently in Pending Deletion | worker.pending@ppac.co.uk | 1. Login succeeds, the app navigates to the "Deletion Scheduled" screen (timer + "Cancel Account Deletion") | High |
+
+---
+
+## Notes & Open Questions (Ambiguities)
+
+1. **⚠️ Conflict — is the "Other details" field optional or required:** The requirement states *"Other (with optional text input)"* but the UI (`delete acc 12`) shows an error *"Please enter the details here"* → the UI treats it as **required** when Other is ticked. BA to decide. (Affects TC010)
+2. **Maximum length of the "Other details" field** — not defined by the requirement or the UI (TC012 assumes 500 characters).
+3. **"Continue Deletion"** in the "Keep your account?" dialog — interpreted as *keeping the deletion scheduled* (TC027); the exact semantics need confirmation.
+4. **Behaviour when "Other" is unticked** — whether the previously entered text is cleared or kept (TC011).
+5. **Data retention after deletion** — is PII fully deleted or anonymized? How is the reason analytics data retained?
+6. **Reminder notification** before the deletion time — the requirement does not define whether one is sent, or when.
+7. **Timezone of the 24h mark** — calculated by server time or the worker's local time (affects TC021, TC023, TC031, TC037).
+8. **Whether the worker can use the app normally while Pending Deletion** — or is locked to the "Deletion Scheduled" screen.
+9. **Low-resolution screenshot** — button labels/titles were taken from the readable parts; cross-check against the original Figma.

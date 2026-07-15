@@ -1,0 +1,112 @@
+[{
+  "thresholds": [
+    {
+      "key": "deepFakeInvalid",
+      "description": "All deepFake.className must equal expectedClassName",
+      "score": 1,
+      "criterion": "Face appears to be AI-generated or manipulated (deepfake)."
+    },
+    {
+      "key": "livenessFailed",
+      "description": "livenessStatus must equal expectedStatus",
+      "score": 1,
+      "criterion": "Liveness check failed — the face might be a photo, video, or mask."
+    },
+    {
+      "key": "documentDeprecated",
+      "description": "Document type must not be deprecated",
+      "score": 1,
+      "criterion": "The document is outdated or no longer accepted."
+    },
+    {
+      "key": "mrzMissing",
+      "description": "MRZ position array must be non‑empty",
+      "score": 1,
+      "criterion": "Machine Readable Zone (MRZ) is missing or unreadable."
+    },
+    {
+      "key": "comparisonStatusInvalid",
+      "description": "textResult.comparisonStatus must equal expectedComparison",
+      "score": 0.25,
+      "criterion": "Text comparison on the document failed (e.g., name mismatch)."
+    },
+    {
+      "key": "docPositionMissing",
+      "description": "documentPosition array must be non‑empty",
+      "score": 0.1,
+      "criterion": "The document was not properly detected in the image."
+    },
+    {
+      "key": "docPerspectiveBad",
+      "description": "documentPosition.perspectiveTr must equal expectedPerspective",
+      "score": 0.1,
+      "criterion": "The document is tilted or not captured from a straight angle."
+    },
+    {
+      "key": "docAngleDeviation",
+      "description": "documentPosition.objIntAngleDev must equal expectedDev",
+      "score": 0.1,
+      "criterion": "The document is captured at an unusual or skewed angle."
+    },
+    {
+      "key": "ageMismatch",
+      "description": "Absolute difference between agePrediction and DOB-derived age must be ≤ maxGapYears",
+      "score": 0.1,
+      "criterion": "The predicted age does not match the age on the document."
+    },
+    {
+      "key": "imageType01Bad",
+      "description": "For types 0 or 1 in imageQualityList, result must equal expectedResult",
+      "score": 0.1,
+      "criterion": "One or more required image types are of insufficient quality."
+    },
+    {
+      "key": "faceSimilarityLow",
+      "description": "faceSimilarity < threshold",
+      "score": 1,
+      "criterion": "The face in the selfie does not match the document photo."
+    },
+    {
+      "key": "faceSimilarityMedium",
+      "description": "faceSimilarity between lowThreshold and threshold",
+      "score": 0.5,
+      "criterion": "The face match is uncertain — not clearly matched or unmatched."
+    },
+    {
+      "key": "rfidInvalid",
+      "description": "detailsRFID.aa must success if RFID chip is present",
+      "score": 1,
+      "criterion": "The RFID chip in the document did not pass verification."
+    },
+    {
+      "key": "citizenshipMismatch",
+      "description": "Citizenship in document must match profile citizenship",
+      "score": 1,
+      "criterion": "Citizenship does not match profile."
+    },
+    {
+      "key": "passportExpired",
+      "description": "Passport must not be expired",
+      "score": 1,
+      "criterion": "Passport is expired."
+    },
+    {
+      "key": "minimumAge",
+      "description": "Minimum age requirement",
+      "score": 0.5,
+      "criterion": "Applicant is below required age."
+    },
+    {
+      "key": "livenessElectronicDeviceFailed",
+      "description": "Check if applicant is using an electronic device during liveness verification",
+      "score": 0.5,
+      "criterion": "Applicant may be using an electronic display device during verification"
+    },
+    {
+      "key": "livenessBlackAndWhiteCopyFailed",
+      "description": "Detect black and white copy usage during liveness verification",
+      "score": 0.5,
+      "criterion": "Applicant may have used a black and white copy instead of a live capture"
+    }
+  ]
+}]
