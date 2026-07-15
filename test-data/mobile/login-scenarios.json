@@ -1,0 +1,20 @@
+[
+  {
+    "scenario": "Empty password",
+    "email": "registered.user@ppac.co.uk",
+    "password": "",
+    "expectedError": "Password is required"
+  },
+  {
+    "scenario": "Malformed email address",
+    "email": "not-an-email",
+    "password": "ValidPass@123",
+    "expectedError": "Enter a valid email address"
+  },
+  {
+    "scenario": "Unregistered account",
+    "email": "ghost.user@ppac.co.uk",
+    "password": "ValidPass@123",
+    "expectedError": "Account not found"
+  }
+]

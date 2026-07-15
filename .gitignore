@@ -1,0 +1,15 @@
+target/
+allure-results/
+artifacts/
+execution/
+logs/
+reports/
+screenshots/
+test-output/
+.idea/
+.vscode/
+*.iml
+*.class
+*.log
+.DS_Store
+.env

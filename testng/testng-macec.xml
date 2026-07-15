@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+
+<!--
+  macec suite - exercises the New Check flow using the company prefix "macec"
+  (resolves to contractor "Mace Construct" in the PPAC Sandbox).
+
+  Run with: mvn test -Dsuite.xml=testng/testng-macec.xml
+-->
+<suite name="PPAC Mobile macec New Check Suite" verbose="1">
+
+    <test name="macec - New Check prefix entry">
+        <classes>
+            <class name="co.uk.ppac.mobile.tests.NewCheckMacecTest"/>
+        </classes>
+    </test>
+</suite>

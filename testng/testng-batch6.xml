@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="PPAC Batch 6 (M2 status text)" verbose="1" parallel="false">
+    <test name="Batch 6 — M2 status column text">
+        <classes>
+            <class name="co.uk.ppac.web.tests.compliantportal.M2StatusDefinitionsTest">
+                <methods>
+                    <include name="testStatusColumnTextExactMatchSpec"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>

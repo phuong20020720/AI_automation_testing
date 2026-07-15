@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+
+<!--
+  Smoke suite - verifies the automation environment end to end.
+  Run with: mvn test -Dsuite.xml=testng/testng-smoke.xml
+-->
+<suite name="PPAC Mobile Smoke Suite" verbose="1">
+
+    <test name="App Launch Smoke">
+        <classes>
+            <class name="co.uk.ppac.mobile.tests.AppLaunchSmokeTest"/>
+        </classes>
+    </test>
+</suite>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="PPAC Modal Header Fix — Verify Regression" verbose="1" parallel="false">
+    <test name="Modal header verify">
+        <classes>
+            <class name="co.uk.ppac.web.tests.compliantportal.M1QueueAndKpiTest">
+                <methods>
+                    <include name="testRowClickOpensModalMatchingEmail"/>
+                </methods>
+            </class>
+            <class name="co.uk.ppac.web.tests.compliantportal.M2HeaderSyncTest"/>
+            <class name="co.uk.ppac.web.tests.compliantportal.M2ForbiddenTransitionsTest"/>
+        </classes>
+    </test>
+</suite>

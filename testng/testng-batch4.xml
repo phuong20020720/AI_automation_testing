@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="PPAC Batch 4 (M11 fix + M1 + M4 sub-tabs + M6 scroll)" verbose="1" parallel="false">
+    <test name="Batch 4 — High batch">
+        <classes>
+            <class name="co.uk.ppac.web.tests.compliantportal.M11SecurityInspectionTest">
+                <methods>
+                    <include name="testAdminSeesWorkersFromMultipleContractors"/>
+                </methods>
+            </class>
+            <class name="co.uk.ppac.web.tests.compliantportal.M1QueueAndKpiTest">
+                <methods>
+                    <include name="testRepeatedModalOpenFromRowIsStable"/>
+                </methods>
+            </class>
+            <class name="co.uk.ppac.web.tests.compliantportal.M4DocumentPanelTest">
+                <methods>
+                    <include name="testClickPpacReportSubTabKeepsModalStable"/>
+                    <include name="testClickRegulaDataSubTabKeepsModalStable"/>
+                </methods>
+            </class>
+            <class name="co.uk.ppac.web.tests.compliantportal.M6PaginationTest">
+                <methods>
+                    <include name="testScrollPositionRetentionAfterModalClose"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>

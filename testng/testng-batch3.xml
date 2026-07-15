@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="PPAC Batch 3 (M4 Panel + Modal fix verify)" verbose="1" parallel="false">
+    <test name="Batch 3 — M4 panel + regression verify">
+        <classes>
+            <class name="co.uk.ppac.web.tests.compliantportal.M4DocumentPanelTest"/>
+            <class name="co.uk.ppac.web.tests.compliantportal.M2ForbiddenTransitionsTest"/>
+            <class name="co.uk.ppac.web.tests.compliantportal.M2HeaderSyncTest"/>
+            <class name="co.uk.ppac.web.tests.compliantportal.M1QueueAndKpiTest">
+                <methods>
+                    <include name="testRowClickOpensModalMatchingEmail"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>

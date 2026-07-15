@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="PPAC Worker Management Automation Suite" verbose="1" parallel="false">
+
+    <test name="01-Worker List">
+        <classes>
+            <class name="co.uk.ppac.web.tests.workermanagement.WorkerListTest"/>
+        </classes>
+    </test>
+
+    <test name="02-Worker Profile">
+        <classes>
+            <class name="co.uk.ppac.web.tests.workermanagement.WorkerProfileTest"/>
+        </classes>
+    </test>
+
+    <test name="03-Worker Delete">
+        <classes>
+            <class name="co.uk.ppac.web.tests.workermanagement.WorkerDeleteTest"/>
+        </classes>
+    </test>
+
+    <test name="04-Worker Filter">
+        <classes>
+            <class name="co.uk.ppac.web.tests.workermanagement.WorkerFilterTest"/>
+        </classes>
+    </test>
+
+    <test name="05-Worker RtW View">
+        <classes>
+            <class name="co.uk.ppac.web.tests.workermanagement.WorkerRtwViewTest"/>
+        </classes>
+    </test>
+
+    <test name="06-Worker Status">
+        <classes>
+            <class name="co.uk.ppac.web.tests.workermanagement.WorkerStatusTest"/>
+        </classes>
+    </test>
+
+    <test name="07-Worker RtW Deep">
+        <classes>
+            <class name="co.uk.ppac.web.tests.workermanagement.WorkerRtwDeepTest"/>
+        </classes>
+    </test>
+
+    <test name="08-Worker Skill Card">
+        <classes>
+            <class name="co.uk.ppac.web.tests.workermanagement.WorkerSkillCardTest"/>
+        </classes>
+    </test>
+
+    <test name="09-Worker Security">
+        <classes>
+            <class name="co.uk.ppac.web.tests.workermanagement.WorkerSecurityTest"/>
+        </classes>
+    </test>
+
+    <test name="10-Worker Inception">
+        <classes>
+            <class name="co.uk.ppac.web.tests.workermanagement.WorkerInceptionTest"/>
+        </classes>
+    </test>
+
+    <test name="11-Worker UI State">
+        <classes>
+            <class name="co.uk.ppac.web.tests.workermanagement.WorkerUiStateTest"/>
+        </classes>
+    </test>
+
+</suite>

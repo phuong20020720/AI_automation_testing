@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="PPAC High Batch 2 (M11 + M1 + M5 new)" verbose="1" parallel="false">
+    <test name="High Batch 2 — new TCs">
+        <classes>
+            <class name="co.uk.ppac.web.tests.compliantportal.M11SecurityInspectionTest">
+                <methods>
+                    <include name="testDistinctOnGroupsSharedEmailToSingleRow"/>
+                    <include name="testSharedEmailSubmitIsolation"/>
+                    <include name="testSingleContractorDropdownGap"/>
+                    <include name="testApiPermissionGap"/>
+                    <include name="testNetworkRequestIncludesContractorFilter"/>
+                </methods>
+            </class>
+            <class name="co.uk.ppac.web.tests.compliantportal.M1QueueAndKpiTest">
+                <methods>
+                    <include name="testKpiPendingMatchesRowSumAcrossPages"/>
+                </methods>
+            </class>
+            <class name="co.uk.ppac.web.tests.compliantportal.M5ExpiryReportTest">
+                <methods>
+                    <include name="testDoubleClickProducesSingleDownload"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>

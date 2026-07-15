@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<!-- Temp suite — chỉ chạy M3 Filter + M6 Pagination để iterate nhanh khi auto-heal. -->
+<suite name="PPAC Compliant Portal — M3 + M6 focus" verbose="2" parallel="false">
+    <test name="M3 Filter + M6 Pagination">
+        <classes>
+            <class name="co.uk.ppac.web.tests.compliantportal.M3FilterTest"/>
+            <class name="co.uk.ppac.web.tests.compliantportal.M3SearchTest"/>
+            <class name="co.uk.ppac.web.tests.compliantportal.M3DateRangeTest"/>
+            <class name="co.uk.ppac.web.tests.compliantportal.M3ContractorTest"/>
+            <class name="co.uk.ppac.web.tests.compliantportal.M6PaginationTest"/>
+        </classes>
+    </test>
+</suite>

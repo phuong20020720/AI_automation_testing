@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="PPAC Compliant Portal — M1 Critical" verbose="1" parallel="false">
+    <test name="M1 Queue + KPI">
+        <classes>
+            <class name="co.uk.ppac.web.tests.compliantportal.M1QueueAndKpiTest"/>
+        </classes>
+    </test>
+</suite>

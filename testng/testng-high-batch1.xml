@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="PPAC Compliant Portal — High Priority Batch 1" verbose="1" parallel="false">
+
+    <!--
+      Focused suite cho Batch 1 (~13 new tests + regression):
+      - M1: TC_004 (Email no truncate), TC_005 (status badge), TC_007 (empty state)
+      - M3: TC_002 (filter refresh), TC_003 (dual annotation via M2_TC_001), TC_012 (Name), TC_013 (Surname),
+            TC_041 (multi-select), TC_045 (count badge)
+      - M4: TC_001 (header 9 fields), TC_030 (panel 9 fields)
+      - M11: TC_002 (cross-contractor), TC_003 (cross product)
+      Plus regression on existing classes that the new tests share state with.
+    -->
+
+    <test name="01-M1 Queue (new TC_004/005/007 + existing)">
+        <classes>
+            <class name="co.uk.ppac.web.tests.compliantportal.M1QueueAndKpiTest"/>
+        </classes>
+    </test>
+
+    <test name="02-M3 Filter Bar (new TC_002/012/013/041/045 + existing)">
+        <classes>
+            <class name="co.uk.ppac.web.tests.compliantportal.M3FilterTest"/>
+        </classes>
+    </test>
+
+    <test name="03-M4 Header + Panel (new TC_001/030)">
+        <classes>
+            <class name="co.uk.ppac.web.tests.compliantportal.M4HeaderPanelTest"/>
+        </classes>
+    </test>
+
+    <test name="04-M11 Admin scope + Security (new TC_002/003 + existing TC_020)">
+        <classes>
+            <class name="co.uk.ppac.web.tests.compliantportal.M11SecurityInspectionTest"/>
+        </classes>
+    </test>
+
+    <test name="05-M2 Status Definitions (regression — M3_TC_003 now annotated dual)">
+        <classes>
+            <class name="co.uk.ppac.web.tests.compliantportal.M2StatusDefinitionsTest"/>
+        </classes>
+    </test>
+
+</suite>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+
+<!--
+  Login suite - runs only LoginMobileTest.
+  Run with: mvn test -Dsuite.xml=testng/testng-login.xml
+-->
+<suite name="PPAC Mobile Login Suite" verbose="1">
+
+    <test name="Login Tests">
+        <classes>
+            <class name="co.uk.ppac.mobile.tests.LoginMobileTest"/>
+        </classes>
+    </test>
+</suite>

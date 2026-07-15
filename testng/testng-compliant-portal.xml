@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="PPAC Compliant Portal Automation Suite" verbose="1" parallel="false">
+
+    <!--
+      Order is chosen to keep state stable on UAT shared data:
+      1. Display-only smoke first (M2 already validated)
+      2. Filter + KPI checks (no side effects)
+      3. Read-only modal navigation
+      4. M11 URL inspection (no side effects)
+      5. Pagination + Expiry Report (Expiry Report triggers download)
+      6. M2 write transitions + M4 Edit LAST and gated by -Dcompliantportal.write.enabled=true
+    -->
+
+    <test name="01-M2 State Machine (read-only)">
+        <classes>
+            <class name="co.uk.ppac.web.tests.compliantportal.M2StatusDefinitionsTest"/>
+            <class name="co.uk.ppac.web.tests.compliantportal.M2HeaderSyncTest"/>
+            <class name="co.uk.ppac.web.tests.compliantportal.M2ForbiddenTransitionsTest"/>
+            <class name="co.uk.ppac.web.tests.compliantportal.M4DocumentPanelTest"/>
+        </classes>
+    </test>
+
+    <test name="02-M3 Filter Bar">
+        <classes>
+            <class name="co.uk.ppac.web.tests.compliantportal.M3FilterTest"/>
+            <class name="co.uk.ppac.web.tests.compliantportal.M3SearchTest"/>
+            <class name="co.uk.ppac.web.tests.compliantportal.M3DateRangeTest"/>
+            <class name="co.uk.ppac.web.tests.compliantportal.M3ContractorTest"/>
+            <class name="co.uk.ppac.web.tests.compliantportal.M3FilterCombosTest"/>
+        </classes>
+    </test>
+
+    <test name="03-M1 Queue and KPI">
+        <classes>
+            <class name="co.uk.ppac.web.tests.compliantportal.M1QueueAndKpiTest"/>
+        </classes>
+    </test>
+
+    <test name="04-M11 Security Inspection">
+        <classes>
+            <class name="co.uk.ppac.web.tests.compliantportal.M11SecurityInspectionTest"/>
+        </classes>
+    </test>
+
+    <test name="05-M6 Pagination">
+        <classes>
+            <class name="co.uk.ppac.web.tests.compliantportal.M6PaginationTest"/>
+        </classes>
+    </test>
+
+    <test name="06-M5 Expiry Report">
+        <classes>
+            <class name="co.uk.ppac.web.tests.compliantportal.M5ExpiryReportTest"/>
+        </classes>
+    </test>
+
+    <test name="07-M2 Write Transitions (gated)">
+        <classes>
+            <class name="co.uk.ppac.web.tests.compliantportal.M2TransitionsTest"/>
+        </classes>
+    </test>
+
+    <test name="08-M4 Edit Write Actions (gated)">
+        <classes>
+            <class name="co.uk.ppac.web.tests.compliantportal.M4EditTest"/>
+        </classes>
+    </test>
+
+</suite>

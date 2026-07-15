@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+
+<!--
+  New Check - no-skill-card journey (skillCardJourney=false, prefix "jcb").
+  Run with: mvn test -Dsuite.xml=testng/testng-newcheck-notskillcard.xml
+-->
+<suite name="PPAC Mobile New Check No-Skill-Card Suite" verbose="1">
+
+    <test name="New Check - no-skill-card journey (skips skill card)">
+        <classes>
+            <class name="co.uk.ppac.mobile.tests.NewCheckNoSkillCardTest"/>
+        </classes>
+    </test>
+</suite>

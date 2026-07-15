@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="PPAC Compliant Portal — M5 Critical" verbose="1" parallel="false">
+    <test name="M5 Expiry Report download-verify">
+        <classes>
+            <class name="co.uk.ppac.web.tests.compliantportal.M5ExpiryReportTest"/>
+        </classes>
+    </test>
+</suite>

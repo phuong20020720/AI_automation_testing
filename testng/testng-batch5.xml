@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="PPAC Batch 5 (M4 sub-tabs + Copy buttons)" verbose="1" parallel="false">
+    <test name="Batch 5 — M4 light TCs">
+        <classes>
+            <class name="co.uk.ppac.web.tests.compliantportal.M4DocumentPanelTest">
+                <methods>
+                    <include name="testClickCardVerificationSubTabKeepsModalStable"/>
+                    <include name="testPpacReportSubTabShowsContentOrPlaceholder"/>
+                    <include name="testCopyButtonsClickableModalStable"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="PPAC Compliant Portal — M6_TC_030" verbose="1" parallel="false">
+    <test name="M6 page retention with modal">
+        <classes>
+            <class name="co.uk.ppac.web.tests.compliantportal.M6PaginationTest">
+                <methods>
+                    <include name="testOpenModalFromPageThreeThenCloseRetainsPage"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>

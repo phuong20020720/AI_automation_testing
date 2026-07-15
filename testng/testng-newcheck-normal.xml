@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+
+<!--
+  New Check - normal journey (skillCardJourney=true, prefix "ppactest").
+  Run with: mvn test -Dsuite.xml=testng/testng-newcheck-normal.xml
+-->
+<suite name="PPAC Mobile New Check Normal Suite" verbose="1">
+
+    <test name="New Check - normal journey (reaches skill card)">
+        <classes>
+            <class name="co.uk.ppac.mobile.tests.NewCheckNormalTest"/>
+        </classes>
+    </test>
+</suite>

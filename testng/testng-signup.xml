@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="PPAC Mobile Sign Up Suite" verbose="1" parallel="false">
+    <test name="M10 Sign Up E2E">
+        <classes>
+            <class name="co.uk.ppac.mobile.tests.SignUpEmailE2ETest"/>
+        </classes>
+    </test>
+</suite>
