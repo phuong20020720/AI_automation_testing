@@ -2,12 +2,16 @@
 
 This repository contains a Java/Maven automation framework for web and mobile testing using Selenium, Appium, TestNG, and Allure.
 
-## What is included
+## Overview
+This project is designed to support automated regression and smoke testing for both web and mobile applications. It includes reusable framework components, test suites, and AI-assisted workflow assets.
+
+## Key features
 - Web automation with Selenium
 - Mobile automation with Appium
 - TestNG suite definitions under testng/
 - Allure reporting integration
 - Maven profiles for web and mobile execution
+- AI prompts, rules, skills, and workflows under ai/
 
 ## Prerequisites
 - JDK 17 or newer
@@ -24,7 +28,7 @@ export JAVA_HOME=$(/usr/libexec/java_home -v 17)
 export PATH="$JAVA_HOME/bin:$PATH"
 ```
 
-## Run the tests
+## Run tests
 Run the web suite:
 
 ```bash
@@ -47,8 +51,12 @@ mvn allure:serve
 - src/main: shared framework components, utilities, page object/model code
 - src/test: test classes
 - testng: TestNG XML suite files
-- docs: additional documentation
+- docs: documentation and implementation notes
 - ai: prompts, rules, skills, and workflows
+- config: environment and framework configuration
 
 ## CI
 A basic GitHub Actions workflow is included to compile the project on push and pull requests.
+
+## Contribution
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) before making changes.
